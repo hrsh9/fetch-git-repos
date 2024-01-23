@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>GitHub Repositories</title>
+</head>
+<body>
+    <h1>GitHub Repositories</h1>
+   
+    <div id="search-bar">
+        <div>
+            <label for="username">Enter GitHub Username:</label>
+            <input type="text" id="username" placeholder="johnpapa">
+        </div>
+        <button onclick="searchUser()">Search</button>
+    </div>
 
+    <div id="user-info"></div>
+
+    <div id="loader-container">
+        <div class="loader"></div>
+    </div>
+    
+    <div id="repositories"></div>
+
+    <div id="pagination"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

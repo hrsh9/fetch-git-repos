@@ -1,7 +1,7 @@
 //JavaScript will start loading and displaying once html dom is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
 
-    const username = 'johnpapa';
+    let username = 'johnpapa';
     let currentPage = 1;
     let repositoriesPerPage = 10;
 
@@ -17,10 +17,41 @@ document.addEventListener('DOMContentLoaded', () => {
         loaderContainer.style.display = 'none';
     }
 
+    // Function to set headers with authorization and handle rate limits
+    async function setHeaders() {
+        const githubToken = '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'; // Replace with your GitHub token
+        const response = await fetch('https://api.github.com/rate_limit', {
+            headers: {
+                Authorization: `Bearer ${githubToken}`,
+            },
+        });
+
+        if (response.ok) {
+            const rateLimitInfo = await response.json();
+            const remainingRequests = rateLimitInfo.resources.core.remaining;
+
+            if (remainingRequests === 0) {
+                const resetTime = new Date(rateLimitInfo.resources.core.reset * 1000);
+                console.log(`API rate limit exceeded. Reset at: ${resetTime}`);
+                // Implement any necessary logic here (e.g., wait until the rate limit is reset)
+            }
+
+            return {
+                headers: {
+                    Authorization: `Bearer ${githubToken}`,
+                },
+            };
+        } else {
+            console.error('Error fetching rate limit info:', response.statusText);
+            return {};
+        }
+    }
+
     //function to fetch all the user details
     const getUserInfo = async(username) => {
         showLoader();
-        const response = await fetch(`https://api.github.com/users/${username}`);
+        const headers = await setHeaders();
+        const response = await fetch(`https://api.github.com/users/${username}`, headers);
         const data = await response.json();
         displayUserInfo(data);
     }
@@ -54,7 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     //function to get repositories info
     const getRepos = async (username, currentPage) => {
         showLoader();
-        const response = await fetch(`https://api.github.com/users/${username}/repos?page=${currentPage}&per_page=${repositoriesPerPage}`);
+        const headers = await setHeaders();
+        const response = await fetch(`https://api.github.com/users/${username}/repos?page=${currentPage}&per_page=${repositoriesPerPage}`, headers);
+        setHeaders();
         const reposData = await response.json();
         displayRepos(reposData);
     }
@@ -72,14 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
                 //function to display languages used
                 const languages = async function(owner, repoName){
-                    const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/languages`);
+                    const headers = await setHeaders();
+                    const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/languages`, headers);
                     const allLanguages = await response.json();
                     repositoryElement.innerHTML += `<p class="lang">${Object.keys(allLanguages).join('</p><p class="lang">') || "Not Defined"}</p>`;
                 }
                 languages(repository.owner.login, repository.name);
                 repositoriesContainer.appendChild(repositoryElement);
             });
-            hideLoader();
+            
             pagination();
     }
 
@@ -97,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button onclick="changePage(-1)">Previous</button>
             <button onclick="changePage(1)">Next</button>
         `;
+        hideLoader();
     }
 
     // Function to update repositories per page

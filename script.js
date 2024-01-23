@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (remainingRequests === 0) {
                 const resetTime = new Date(rateLimitInfo.resources.core.reset * 1000);
                 console.log(`API rate limit exceeded. Reset at: ${resetTime}`);
-                // Implement any necessary logic here (e.g., wait until the rate limit is reset)
             }
 
             return {
@@ -41,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     Authorization: `Bearer ${githubToken}`,
                 },
             };
+            
         } else {
             console.error('Error fetching rate limit info:', response.statusText);
             return {};

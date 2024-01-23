@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-
 #search-bar{
     width: 100%;
     height: 150px;
@@ -48,7 +47,6 @@ option{
     text-align: center;
     margin-top: 20px;
 }
-
 .loader {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
@@ -58,7 +56,6 @@ option{
     animation: spin 1s linear infinite;
     margin: auto;
 }
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -86,6 +83,7 @@ option{
         margin-right: 0;
     }
 }
+
 .description{
     margin-top: 10px;
     margin-bottom: 15px;
@@ -102,11 +100,9 @@ option{
     margin-top: 20px;
     text-align: center;
 }
-
 #pagination select {
     margin-right: 10px;
 }
-
 
 h1{
 background-color: #000000;

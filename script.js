@@ -152,10 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //function to search github user with username
     window.searchUser = async function () {
-        const inputUsername = document.getElementById('username').value;
+        let inputUsername = document.getElementById('username').value;
         if(inputUsername != ''){
             username = inputUsername;
         }
+
         getUserInfo(username);
         getRepos(username, currentPage)
     };
